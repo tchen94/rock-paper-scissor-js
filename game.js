@@ -1,18 +1,18 @@
-const computerSelection = computerPlay();
 let playerScore = 0;
 let cpuScore = 0;
-
 
 function computerPlay() {
     let selection = Math.floor(Math.random() * 3);
     switch (selection) {
         case 0: return "rock";
         case 1: return "paper";
-        case 2: return "scissor";
+        case 2: return "scissors";
     }
 }
 
-function playRound(playerSelection, computerSelection) {
+function playRound(playerSelection) {
+    let computerSelection = computerPlay();
+
     if (playerSelection == computerSelection) {
         return "You Tied!";
     } else if (playerSelection == "rock" && computerSelection == "scissors") {
@@ -39,7 +39,7 @@ function playRound(playerSelection, computerSelection) {
 function game() {
     while (playerScore + cpuScore != 5) {
         let userInput = prompt("Rock, Paper, or Scissors?");
-        console.log(playRound(userInput.toLowerCase(), computerSelection));
+        console.log(playRound(userInput.toLowerCase()));
     }
     console.log(playerScore > cpuScore ? "You win!" : "You lose!");
 }
