@@ -10,6 +10,11 @@ function computerPlay() {
     }
 }
 
+function playerSelection(choice) {
+    const btnSelected = document.querySelector(`#${choice}`);
+    btnSelected.addEventListener('click', console.log(playRound(`${choice}`)));
+}
+
 function playRound(playerSelection) {
     let computerSelection = computerPlay();
 
@@ -37,10 +42,7 @@ function playRound(playerSelection) {
 }
 
 function game() {
-    while (playerScore + cpuScore != 5) {
-        let userInput = prompt("Rock, Paper, or Scissors?");
-        console.log(playRound(userInput.toLowerCase()));
-    }
-    console.log(playerScore > cpuScore ? "You win!" : "You lose!");
+    let gameStart = document.addEventListener('click', playRound())
 }
+
 
