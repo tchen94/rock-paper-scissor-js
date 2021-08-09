@@ -1,48 +1,72 @@
+const options = document.querySelectorAll('.options');
 let playerScore = 0;
 let cpuScore = 0;
 
-function computerPlay() {
-    let selection = Math.floor(Math.random() * 3);
-    switch (selection) {
-        case 0: return "rock";
-        case 1: return "paper";
-        case 2: return "scissors";
-    }
-}
+options.forEach((option) => {
+    option.addEventListener('click', function() {
+        const playerChoice = this.textContent;
+        const computerOptions = ["Rock", "Paper", "Scissor"];
+        const computerChoice = computerOptions[Math.floor(Math.random() * 3)];
 
-function playerSelection(choice) {
-    const btnSelected = document.querySelector(`#${choice}`);
-    btnSelected.addEventListener('click', console.log(playRound(`${choice}`)));
-}
+        playRound(playerChoice, computerChoice);
+        displayResult();
+        if (gameWin()) {
+            cpuScore = 0;
+            playerScore = 0;
+            displayResult();
+        }
+    });
+});
 
-function playRound(playerSelection) {
-    let computerSelection = computerPlay();
-
+function playRound(playerSelection, computerSelection) {
+    //Tie Check
     if (playerSelection == computerSelection) {
-        return "You Tied!";
-    } else if (playerSelection == "rock" && computerSelection == "scissors") {
-        playerScore++;
-        return "You Win! Rock beats Scissors";
-    } else if (playerSelection == "scissors" && computerSelection == "rock") {
-        cpuScore++;
-        return "You Lose! Rock beats Scissors";
-    } else if (playerSelection == "paper" && computerSelection == "rock") {
-        playerScore++;
-        return "You Win! Paper beats Rock";
-    } else if (playerSelection == "rock" && computerSelection == "paper") {
-        cpuScore++;
-        return "You Lose! Paper beats Rock";
-    } else if (playerSelection == "scissors" && computerSelection == "paper") {
-        playerScore++;
-        return "You Win! Scissors beats Paper";
-    } else if (playerSelection == "paper" && computerSelection == "scissors") {
-        cpuScore++;
-        return "You Lose! Scissors beats Paper";
+        document.getElementById('result').textContent = "You Tied!";
+        return;
+    }
+    //Player selects "Rock"
+    if (playerSelection === "Rock") {
+        if (computerSelection === "Scissors") {
+            document.getElementById('result').textContent = "You Win! Rock beats Scissors";
+            playerScore++;
+        } else {
+            document.getElementById('result').textContent = "You Lose! Rock beats Scissors";
+            cpuScore++;
+        }
+    }
+    //Player selects "Paper"
+    if (playerSelection === "Paper") {
+        if (computerSelection === "Rock") {
+            document.getElementById('result').textContent = "You Win! Paper beats Rock";
+            playerScore++;
+        } else {         
+            document.getElementById('result').textContent = "You Lose! Paper beats Rock";
+            cpuScore++;
+        }
+    }
+    //Player selects "Scissors"
+    if (playerSelection === "Scissors") {
+        if (computerSelection === "Paper") {     
+            document.getElementById('result').textContent = "You Win! Scissors beats Paper";
+            playerScore++;
+        } else {  
+            document.getElementById('result').textContent = "You Lose! Scissors beats Paper";
+            cpuScore++;
+        }
     }
 }
 
-function game() {
-    let gameStart = document.addEventListener('click', playRound())
+function displayResult() {
+    document.getElementById('player-score').textContent = playerScore;
+    document.getElementById('cpu-score').textContent = cpuScore;
 }
 
-
+function gameWin() {
+    if (cpuScore === 5 || playerScore == 5) {
+        const winner = playerScore === 5 ? "Player Wins! Make your selection to start a new game" : 
+        "CPU Wins! Make your selection to try again";
+        document.getElementById('result').innerHTML = winner;
+        return true;
+    }
+    return false;
+}
